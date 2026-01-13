@@ -70,6 +70,8 @@ code {
   color: #ffffff;
   max-width: 20vh;
   text-decoration: none;
+  border: none;
+  font-size: 16px;
 }
 
 .application:hover {
@@ -409,7 +411,7 @@ code {
 }
 
 /* -- ACCOUNT -- */
-/* Account Page Styles */
+
 .account-page {
   max-width: 800px;
   margin: 40px auto;
@@ -492,4 +494,10 @@ code {
 [data-theme="dark"] .application-card {
   border-color: #333;
   background: #1e1e1e;
+}
+
+
+.applicationbtn {
+  display: flex;
+  justify-content: center;
 }

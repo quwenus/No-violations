@@ -98,6 +98,9 @@ function Application() {
                             )}
                         </div>
                     </form>
+                    <div className='applicationbtn'>
+                        <button  className='application'>Подать заявление</button>
+                    </div>
                 </div>
 
                 <div className="goBack">
