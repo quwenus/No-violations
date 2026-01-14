@@ -13,3 +13,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+app.get('/users', (req, res) => {
+    db.query('SELECT * FROM users', (err, results) => {
+        if (err) return res.json(err)
+        return res.json(results)
+    })
+})
+
+
+db.connect((err) => {
+    if (err) {
+        console.error('❌ MySQL connection failed:', err.message);
+        return;
+    }
+    console.log('✅ Connected to MySQL database!');
+});
