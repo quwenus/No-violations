@@ -6,6 +6,7 @@ function Register() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
+        fio: '',
         email: '',
         login: '',
         password: ''
@@ -17,7 +18,6 @@ function Register() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
 
-        // Clear error when user starts typing
         if (errors[name]) {
             setErrors({ ...errors, [name]: '' });
         }
@@ -48,13 +48,28 @@ function Register() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('Registration data:', formData);
-            // 👉 Here you would call your API to create user
-            alert('Регистрация успешна!'); // temporary
-            navigate('/login');
+            try {
+                const response = await fetch('http://localhost:3000/register',{
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok){
+                    navigate ('/login')
+                }
+                else {
+                    const errorData = await response.json()
+                    alert(errorData.error || 'Ошибка регистрации')
+                }
+            }
+            catch (err) {
+                console.error(err)
+                alert('Не удалось подключиться к серверу')
+            }
         }
     };
 

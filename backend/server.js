@@ -7,7 +7,7 @@ const db = createConnection({
     user: 'root',
     password: 'R43d55ha',
     database: 'ReactProject'
-})
+}).promise();
 
 const app = express();
 app.use(cors());
@@ -29,3 +29,31 @@ db.connect((err) => {
     }
     console.log('✅ Connected to MySQL database!');
 });
+
+
+app.post('/register', async (req, res) => {
+    const { fio, email, login, password } = req.body;
+
+    if (!fio || !email || !login || !password) {
+        return res.status(400).json({ error: "Все поля должны быть заполнены" })
+    }
+
+    const sql = `INSERT INTO users (fio, email, login, password) VALUES (?, ?, ?, ?)`;
+    const values = [fio.trim(), email.trim(), login.trim(), password.trim()];
+
+    try {
+        const result = await db.query(sql, values);
+        return res.status(201).json({ message: 'Пользователь создан' })
+    } catch (err) {
+        console.error('Ошибка регистрации:', err);
+
+        if (err.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ error: "Email или логин уже заняты" });
+        }
+
+        return res.status(500).json({ error: "Ошибка сервера" });
+    }
+})
+
+
+app.listen(3000, () => console.log('Сервер запущен'));
